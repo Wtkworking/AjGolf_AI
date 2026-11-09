@@ -3,112 +3,237 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>ผู้ช่วยตอบคำถาม คณะบริหารธุรกิจ</title>
-<link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;500;600&display=swap" rel="stylesheet">
+<title>AjGolf AI · ผู้ช่วยตอบคำถาม</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
   :root{
-    --blue:#1531a4; --navy:#12224f; --pink:#cd0e5d; --teal:#0e8c8c;
-    --line:#d6ddee; --tint:#f2f6fd; --muted:#5c6478; --bg:#f7f9fd; --card:#fff;
+    --blue:#1531a4; --blue2:#2867cc; --navy:#12224f; --pink:#cd0e5d;
+    --teal:#0e8c8c;
+    --line:#d6ddee; --tint:#f2f6fd; --muted:#5c6478;
+    --bg:#f6f8fc; --card:#ffffff; --code:#f4f6fb;
+    --warnbg:#fff3e2; --warnfg:#9a4b0f; --warnline:#f0cfa8;
     color-scheme: light;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+    box-sizing: border-box;
   }
   @media (prefers-color-scheme: dark){
     :root:not([data-theme="light"]){
-      --navy:#e7ecf7; --line:#2b3550; --tint:#1a2238; --muted:#9aa6c0;
-      --bg:#111827; --card:#171f33; --blue:#7fa2f0;
+      --blue:#89a7f2; --blue2:#6f98e8; --navy:#e8edf8; --pink:#f0749f;
+      --teal:#4fc4bd;
+      --line:#2c3652; --tint:#1a2238; --muted:#9aa6c0;
+      --bg:#0f1525; --card:#171f33; --code:#1b2439;
+      --warnbg:#33250f; --warnfg:#f3b574; --warnline:#5a4220;
       color-scheme: dark;
     }
   }
   *{box-sizing:border-box}
-  html,body{margin:0}
+  html{scroll-padding-top: env(safe-area-inset-top, 0px)}
   body{
+    margin:0; padding:0 16px 48px;
     background:var(--bg); color:var(--navy);
-    font-family:'Prompt',system-ui,sans-serif;
-    padding:24px 16px 40px;
-  }
-  .wrap{max-width:940px; margin:0 auto}
-
-  header{margin-bottom:16px}
-  h1{margin:0 0 6px; font-size:27px; color:var(--blue); font-weight:600}
-  .sub{margin:0; color:var(--muted); font-size:15px}
-
-  .banner{
-    display:flex; gap:10px; align-items:flex-start;
-    background:var(--tint); border:1px solid var(--line);
-    border-radius:10px; padding:13px 15px; margin:16px 0; font-size:14.5px;
+    font-family:'Prompt',system-ui,-apple-system,sans-serif;
     line-height:1.7;
   }
+  .wrap{max-width:900px; margin:0 auto}
+
+  header{padding:38px 0 6px}
+  .logo{display:inline-flex; align-items:center; gap:11px; font-size:30px; font-weight:600; color:var(--blue)}
+  .logo .dot{
+    width:38px; height:38px; border-radius:11px;
+    background:linear-gradient(135deg,#1531a4,#cd0e5d);
+    display:grid; place-items:center; color:#fff; font-size:16px; font-weight:600;
+  }
+  .tagline{margin:8px 0 0; color:var(--muted); font-size:15.5px}
+  .badge{
+    display:inline-block; margin-top:14px; padding:5px 13px;
+    border-radius:999px; font-size:13px; font-weight:500;
+    background:var(--warnbg); color:var(--warnfg); border:1px solid var(--warnline);
+  }
+
+  .card{background:var(--card); border:1px solid var(--line); border-radius:14px; padding:20px 22px; margin-top:18px}
+  h2{margin:0 0 10px; font-size:19px; font-weight:600; color:var(--navy)}
+
+  .banner{
+    display:flex; gap:12px; align-items:flex-start;
+    background:var(--tint); border:1px solid var(--line);
+    border-radius:12px; padding:15px 17px; margin-top:20px; font-size:14.5px;
+  }
   .banner b{color:var(--blue)}
-  a{color:var(--blue)}
+  a{color:var(--blue2)}
 
-  .frame{
-    background:var(--card); border:1px solid var(--line);
-    border-radius:12px; overflow:hidden; min-height:620px;
-  }
-  iframe{width:100%; height:660px; border:0; display:block}
+  .chat{height:320px; overflow-y:auto; padding:4px 2px 10px}
+  .msg{max-width:80%; padding:11px 15px; border-radius:14px; margin:9px 0; font-size:15px; white-space:pre-wrap}
+  .me{margin-left:auto; background:var(--blue); color:#fff; border-bottom-right-radius:5px}
+  .bot{background:var(--tint); border:1px solid var(--line); border-bottom-left-radius:5px}
+  .bot .ref{display:block; margin-top:8px; font-size:12.5px; color:var(--muted)}
 
-  .tips{
-    margin-top:18px; display:grid; gap:12px;
-    grid-template-columns:repeat(auto-fit, minmax(240px, 1fr));
+  .row{display:flex; gap:10px; margin-top:14px}
+  input[type=text]{
+    flex:1; padding:12px 15px; font-family:inherit; font-size:15px;
+    border:1px solid var(--line); border-radius:10px;
+    background:var(--card); color:var(--navy);
   }
-  .tip{
-    background:var(--card); border:1px solid var(--line);
-    border-radius:10px; padding:13px 15px; font-size:14px; line-height:1.65;
+  input[type=text]:focus{outline:2px solid var(--blue2); outline-offset:1px}
+  button{
+    padding:12px 24px; font-family:inherit; font-size:15px; font-weight:500;
+    border:0; border-radius:10px; background:var(--blue); color:#fff; cursor:pointer;
   }
-  .tip b{display:block; margin-bottom:4px; color:var(--teal)}
+  button:hover{opacity:.9}
 
-  footer{margin-top:26px; font-size:13px; color:var(--muted); text-align:center}
+  .chips{margin-top:12px; display:flex; flex-wrap:wrap; gap:8px}
+  .chips span{
+    font-size:13px; padding:6px 12px; border:1px solid var(--line);
+    border-radius:999px; cursor:pointer; color:var(--muted); background:var(--card);
+  }
+  .chips span:hover{border-color:var(--blue2); color:var(--blue2)}
+
+  .todo{border-left:5px solid var(--teal)}
+  .todo ol{margin:8px 0 0; padding-left:22px}
+  .todo li{margin:7px 0; font-size:14.5px}
+  code{
+    font-family:ui-monospace,Consolas,monospace; font-size:13.5px;
+    background:var(--code); border:1px solid var(--line); padding:2px 7px; border-radius:6px;
+  }
+  pre{
+    background:var(--code); border:1px solid var(--line); border-radius:10px;
+    padding:14px 16px; overflow-x:auto; margin-top:12px;
+    font-family:ui-monospace,Consolas,monospace; font-size:13px; line-height:1.65;
+  }
+
+  footer{margin-top:30px; padding-top:18px; border-top:1px solid var(--line);
+         font-size:13.5px; color:var(--muted); text-align:center}
 </style>
 </head>
 <body>
 <div class="wrap">
 
   <header>
-    <h1>ผู้ช่วยตอบคำถาม คณะบริหารธุรกิจ</h1>
-    <p class="sub">ตอบจากเอกสารของคณะเท่านั้น</p>
+    <div class="logo"><span class="dot">AI</span> AjGolf AI</div>
+    <p class="tagline">ผู้ช่วยตอบคำถามจากเอกสารของคณะ</p>
+    <span class="badge">โหมดทดลอง · ยังไม่ได้เชื่อมต่อแชตบอตจริง</span>
   </header>
 
-  <!-- สามอย่างที่บังคับตามสไลด์  บอกว่าเป็น AI  มีช่องทางติดต่อคนจริง  และแสดงที่มา -->
+  <!-- สามอย่างที่บังคับ  บอกว่าเป็น AI  ติดต่อคนจริงได้  และแสดงที่มา -->
   <div class="banner">
-    <span>⚠️</span>
+    <span style="font-size:19px">⚠️</span>
     <div>
-      <b>นี่คือผู้ช่วยอัตโนมัติ ไม่ใช่เจ้าหน้าที่</b>
+      <b>นี่คือผู้ช่วยอัตโนมัติ ไม่ใช่เจ้าหน้าที่</b><br>
       คำตอบอาจคลาดเคลื่อน กรุณาตรวจสอบกับเอกสารต้นฉบับก่อนใช้อ้างอิง<br>
-      ทุกคำตอบจะบอกด้วยว่ามาจากไฟล์ไหน ให้ตรวจสอบย้อนกลับได้<br>
+      ทุกคำตอบจะบอกด้วยว่ามาจากไฟล์ไหน เพื่อให้ตรวจสอบย้อนกลับได้<br>
       ต้องการคุยกับเจ้าหน้าที่จริง ติดต่อ
       <a href="tel:020000002">ฝ่ายวิชาการ 0-2000-0002</a>
-      หรือ <a href="mailto:academic@example.ac.th">ส่งอีเมล</a>
     </div>
   </div>
 
-  <!-- ============================================================
-       แก้บรรทัดเดียวนี้  ใส่ที่อยู่ Space ของกลุ่มตัวเอง
-       ============================================================ -->
-  <div class="frame">
-    <iframe
-      src="https://ชื่อผู้ใช้-ชื่อspace.hf.space"
-      title="แชตบอตคณะ"
-      allow="clipboard-write">
-    </iframe>
+  <!-- ===========================================================
+       ส่วนแชต
+       ตอนนี้เป็นโหมดทดลอง ตอบจากคำตอบสำเร็จรูปที่เขียนไว้ในหน้านี้
+       เมื่อเชื่อมแชตบอตจริงแล้ว ให้แทนกล่องนี้ทั้งก้อนด้วย iframe
+       =========================================================== -->
+  <div class="card">
+    <h2>ลองถามคำถาม</h2>
+    <div class="chat" id="chat">
+      <div class="msg bot">สวัสดีครับ ตอนนี้ยังเป็นโหมดทดลอง ตอบได้เฉพาะคำถามตัวอย่างด้านล่างเท่านั้น
+ลองกดดูเพื่อตรวจว่าหน้าเว็บแสดงผลถูกต้องไหม</div>
+    </div>
+
+    <div class="row">
+      <input id="q" type="text" placeholder="พิมพ์คำถามแล้วกด Enter">
+      <button id="send">ถาม</button>
+    </div>
+
+    <div class="chips">
+      <span>ลาป่วยกี่วันต้องมีใบรับรองแพทย์</span>
+      <span>ถอนรายวิชาแล้วติด W ไหม</span>
+      <span>ทุนเรียนดีต้องเกรดเท่าไร</span>
+      <span>หอพักค่าเช่าเท่าไร</span>
+    </div>
   </div>
 
-  <div class="tips">
-    <div class="tip">
-      <b>ถามอะไรได้บ้าง</b>
-      เรื่องการลา การลงทะเบียน การถอนรายวิชา ทุนการศึกษา การฝึกงาน และการขอเอกสาร
-    </div>
-    <div class="tip">
-      <b>ถ้าตอบว่าไม่พบข้อมูล</b>
-      แปลว่าเรื่องนั้นไม่มีในเอกสารของคณะ ให้ติดต่อเจ้าหน้าที่โดยตรง
-    </div>
-    <div class="tip">
-      <b>ถ้าช่องแชตไม่ขึ้น</b>
-      ระบบอาจกำลังตื่นจากโหมดพัก รอสักครู่แล้วรีเฟรชหน้านี้อีกครั้ง
-    </div>
+  <!-- ลบกล่องนี้ทิ้งเมื่อเชื่อมต่อเสร็จแล้ว -->
+  <div class="card todo">
+    <h2>สิ่งที่ต้องทำต่อ เพื่อเชื่อมกับแชตบอตจริง</h2>
+    <ol>
+      <li>สร้าง Space บน Hugging Face แล้วอัปโค้ดกับเอกสารให้เรียบร้อย</li>
+      <li>คัดลอกที่อยู่ของ Space รูปแบบคือ <code>https://ชื่อผู้ใช้-ชื่อspace.hf.space</code></li>
+      <li>ในไฟล์นี้ ค้นคำว่า <code>ส่วนแชต</code> แล้วแทนกล่องนั้นทั้งก้อนด้วยโค้ดด้านล่าง</li>
+      <li>ลบกล่องนี้ทิ้ง และลบป้าย <b>โหมดทดลอง</b> ที่หัวเว็บ</li>
+    </ol>
+<pre>&lt;div class="card"&gt;
+  &lt;iframe
+    src="https://ชื่อผู้ใช้-ชื่อspace.hf.space"
+    style="width:100%; height:620px; border:0; border-radius:10px"&gt;
+  &lt;/iframe&gt;
+&lt;/div&gt;</pre>
   </div>
 
   <footer>
-    รายวิชาปัญญาประดิษฐ์และการเรียนรู้ของเครื่อง  สัปดาห์ที่ 8  ·  กลุ่มที่ ....
+    AjGolf AI · รายวิชาปัญญาประดิษฐ์และการเรียนรู้ของเครื่อง · สัปดาห์ที่ 8
   </footer>
 </div>
+
+<script>
+// ===============================================================
+// โหมดทดลอง  ตอบจากคำตอบสำเร็จรูป ไม่ได้เรียกแชตบอตจริง
+// ใช้ตรวจว่าหน้าเว็บทำงานถูกต้องก่อนเชื่อมต่อ
+// ===============================================================
+const CANNED = {
+  "ลาป่วย": {
+    a: "ลาป่วยไม่เกิน 4 วัน แจ้งอาจารย์ผู้สอนได้โดยตรง\nตั้งแต่ 5 วันขึ้นไป ต้องแนบใบรับรองแพทย์ และยื่นภายใน 7 วันหลังกลับมาเรียน",
+    ref: "อ้างอิงจาก 01-การลา.txt"
+  },
+  "ถอน": {
+    a: "ถอนภายใน 2 สัปดาห์แรก ไม่ติด W และได้เงินคืนเต็มจำนวน\nถอนตั้งแต่สัปดาห์ที่ 3 ถึง 10 จะติด W และไม่ได้เงินคืน",
+    ref: "อ้างอิงจาก 03-การถอนรายวิชา.txt"
+  },
+  "ทุน": {
+    a: "ทุนเรียนดีต้องมีเกรดเฉลี่ยสะสมไม่ต่ำกว่า 3.50\nและต้องไม่เคยได้เกรด F หรือติด W ในภาคที่ผ่านมา",
+    ref: "อ้างอิงจาก 04-ทุนการศึกษา.txt"
+  }
+};
+const NOT_FOUND = {
+  a: "ไม่พบข้อมูลนี้ในเอกสารของคณะ กรุณาติดต่อฝ่ายวิชาการ โทร 0-2000-0002",
+  ref: "ค้นแล้วไม่พบเอกสารที่เกี่ยวข้อง"
+};
+
+const chat = document.getElementById("chat");
+const q    = document.getElementById("q");
+const send = document.getElementById("send");
+
+function add(text, who, ref){
+  const d = document.createElement("div");
+  d.className = "msg " + who;
+  d.textContent = text;
+  if(ref){
+    const s = document.createElement("span");
+    s.className = "ref";
+    s.textContent = ref;
+    d.appendChild(s);
+  }
+  chat.appendChild(d);
+  chat.scrollTop = chat.scrollHeight;
+}
+
+function ask(){
+  const text = q.value.trim();
+  if(!text) return;
+  add(text, "me");
+  q.value = "";
+  setTimeout(() => {
+    const hit = Object.keys(CANNED).find(k => text.includes(k));
+    const r = hit ? CANNED[hit] : NOT_FOUND;
+    add(r.a, "bot", r.ref);
+  }, 400);
+}
+
+send.addEventListener("click", ask);
+q.addEventListener("keydown", e => { if(e.key === "Enter") ask(); });
+document.querySelectorAll(".chips span").forEach(el => {
+  el.addEventListener("click", () => { q.value = el.textContent; ask(); });
+});
+</script>
 </body>
 </html>

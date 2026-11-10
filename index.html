@@ -64,11 +64,6 @@
   .banner b{color:var(--blue)}
   a{color:var(--blue2)}
 
-  .chat{height:320px; overflow-y:auto; padding:4px 2px 10px}
-  .msg{max-width:80%; padding:11px 15px; border-radius:14px; margin:9px 0; font-size:15px; white-space:pre-wrap}
-  .me{margin-left:auto; background:var(--blue); color:#fff; border-bottom-right-radius:5px}
-  .bot{background:var(--tint); border:1px solid var(--line); border-bottom-left-radius:5px}
-  .bot .ref{display:block; margin-top:8px; font-size:12.5px; color:var(--muted)}
 
   .row{display:flex; gap:10px; margin-top:14px}
   input[type=text]{
@@ -113,7 +108,6 @@
   <header>
     <div class="logo"><span class="dot">AI</span> AjGolf AI</div>
     <p class="tagline">ผู้ช่วยตอบคำถามจากเอกสารของคณะ</p>
-    <span class="badge">โหมดทดลอง · ยังไม่ได้เชื่อมต่อแชตบอตจริง</span>
   </header>
 
   <!-- สามอย่างที่บังคับ  บอกว่าเป็น AI  ติดต่อคนจริงได้  และแสดงที่มา -->
@@ -128,46 +122,13 @@
     </div>
   </div>
 
-  <!-- ===========================================================
-       ส่วนแชต
-       ตอนนี้เป็นโหมดทดลอง ตอบจากคำตอบสำเร็จรูปที่เขียนไว้ในหน้านี้
-       เมื่อเชื่อมแชตบอตจริงแล้ว ให้แทนกล่องนี้ทั้งก้อนด้วย iframe
-       =========================================================== -->
-  <div class="card">
-    <h2>ลองถามคำถาม</h2>
-    <div class="chat" id="chat">
-      <div class="msg bot">สวัสดีครับ ตอนนี้ยังเป็นโหมดทดลอง ตอบได้เฉพาะคำถามตัวอย่างด้านล่างเท่านั้น
-ลองกดดูเพื่อตรวจว่าหน้าเว็บแสดงผลถูกต้องไหม</div>
-    </div>
-
-    <div class="row">
-      <input id="q" type="text" placeholder="พิมพ์คำถามแล้วกด Enter">
-      <button id="send">ถาม</button>
-    </div>
-
-    <div class="chips">
-      <span>ลาป่วยกี่วันต้องมีใบรับรองแพทย์</span>
-      <span>ถอนรายวิชาแล้วติด W ไหม</span>
-      <span>ทุนเรียนดีต้องเกรดเท่าไร</span>
-      <span>หอพักค่าเช่าเท่าไร</span>
-    </div>
-  </div>
-
-  <!-- ลบกล่องนี้ทิ้งเมื่อเชื่อมต่อเสร็จแล้ว -->
-  <div class="card todo">
-    <h2>สิ่งที่ต้องทำต่อ เพื่อเชื่อมกับแชตบอตจริง</h2>
-    <ol>
-      <li>สร้าง Space บน Hugging Face แล้วอัปโค้ดกับเอกสารให้เรียบร้อย</li>
-      <li>คัดลอกที่อยู่ของ Space รูปแบบคือ <code>https://ชื่อผู้ใช้-ชื่อspace.hf.space</code></li>
-      <li>ในไฟล์นี้ ค้นคำว่า <code>ส่วนแชต</code> แล้วแทนกล่องนั้นทั้งก้อนด้วยโค้ดด้านล่าง</li>
-      <li>ลบกล่องนี้ทิ้ง และลบป้าย <b>โหมดทดลอง</b> ที่หัวเว็บ</li>
-    </ol>
-<pre>&lt;div class="card"&gt;
-  &lt;iframe
-    src="https://Woottikarn/faculty-chatbot"
-    style="width:100%; height:620px; border:0; border-radius:10px"&gt;
-  &lt;/iframe&gt;
-&lt;/div&gt;</pre>
+  <!-- ส่วนแชต  ฝังหน้าจอแชตจาก Hugging Face Space -->
+  <div class="card" style="padding:12px">
+    <iframe
+      src="https://woottikarn-faculty-chatbot.hf.space"
+      title="AjGolf AI chatbot"
+      style="width:100%; height:640px; border:0; border-radius:10px; display:block">
+    </iframe>
   </div>
 
   <footer>
@@ -175,65 +136,5 @@
   </footer>
 </div>
 
-<script>
-// ===============================================================
-// โหมดทดลอง  ตอบจากคำตอบสำเร็จรูป ไม่ได้เรียกแชตบอตจริง
-// ใช้ตรวจว่าหน้าเว็บทำงานถูกต้องก่อนเชื่อมต่อ
-// ===============================================================
-const CANNED = {
-  "ลาป่วย": {
-    a: "ลาป่วยไม่เกิน 4 วัน แจ้งอาจารย์ผู้สอนได้โดยตรง\nตั้งแต่ 5 วันขึ้นไป ต้องแนบใบรับรองแพทย์ และยื่นภายใน 7 วันหลังกลับมาเรียน",
-    ref: "อ้างอิงจาก 01-การลา.txt"
-  },
-  "ถอน": {
-    a: "ถอนภายใน 2 สัปดาห์แรก ไม่ติด W และได้เงินคืนเต็มจำนวน\nถอนตั้งแต่สัปดาห์ที่ 3 ถึง 10 จะติด W และไม่ได้เงินคืน",
-    ref: "อ้างอิงจาก 03-การถอนรายวิชา.txt"
-  },
-  "ทุน": {
-    a: "ทุนเรียนดีต้องมีเกรดเฉลี่ยสะสมไม่ต่ำกว่า 3.50\nและต้องไม่เคยได้เกรด F หรือติด W ในภาคที่ผ่านมา",
-    ref: "อ้างอิงจาก 04-ทุนการศึกษา.txt"
-  }
-};
-const NOT_FOUND = {
-  a: "ไม่พบข้อมูลนี้ในเอกสารของคณะ กรุณาติดต่อฝ่ายวิชาการ โทร 0-2000-0002",
-  ref: "ค้นแล้วไม่พบเอกสารที่เกี่ยวข้อง"
-};
-
-const chat = document.getElementById("chat");
-const q    = document.getElementById("q");
-const send = document.getElementById("send");
-
-function add(text, who, ref){
-  const d = document.createElement("div");
-  d.className = "msg " + who;
-  d.textContent = text;
-  if(ref){
-    const s = document.createElement("span");
-    s.className = "ref";
-    s.textContent = ref;
-    d.appendChild(s);
-  }
-  chat.appendChild(d);
-  chat.scrollTop = chat.scrollHeight;
-}
-
-function ask(){
-  const text = q.value.trim();
-  if(!text) return;
-  add(text, "me");
-  q.value = "";
-  setTimeout(() => {
-    const hit = Object.keys(CANNED).find(k => text.includes(k));
-    const r = hit ? CANNED[hit] : NOT_FOUND;
-    add(r.a, "bot", r.ref);
-  }, 400);
-}
-
-send.addEventListener("click", ask);
-q.addEventListener("keydown", e => { if(e.key === "Enter") ask(); });
-document.querySelectorAll(".chips span").forEach(el => {
-  el.addEventListener("click", () => { q.value = el.textContent; ask(); });
-});
-</script>
 </body>
 </html>
